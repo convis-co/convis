@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConVis — Animation & Design</title>
+  <meta name="description" content="ConVis — CONceptualising & VISualising projects that leave a lasting impression.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Exo:ital,wght@0,100..900;1,100..900&family=Fredoka:wght@300..700&family=Manrope:wght@200..800&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Racing+Sans+One&family=Sora:wght@100..800&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Wix+Madefor+Text:ital,wght@0,400..800;1,400..800&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #18191B;
+      --fg: #F2F2F2;
+      --fg-dim: #959697;
+      --gap: 10px;
+      --side: clamp(16px, 3vw, 50px);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; height: auto; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+    /* ===== NAV ===== */
+    .site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px var(--side);
+      mix-blend-mode: difference;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .nav-logo svg {
+      height: 28px;
+      width: auto;
+      fill: var(--fg);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-link {
+      font-family: 'Racing Sans One', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--fg);
+      transition: opacity 0.2s;
+      cursor: pointer;
+    }
+    .nav-link:hover { opacity: 0.7; }
+
+    .nav-holla {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Racing Sans One', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1.5px solid var(--fg);
+      border-radius: 100px;
+      padding: 10px 22px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .nav-holla:hover { background: var(--fg); color: var(--bg); }
+
+    /* ===== PAGES ===== */
+    .page { display: none; min-height: 100vh; }
+    .page.active { display: block; }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: #111;
+    }
+
+    .hero-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 0 var(--side);
+      max-width: 1200px;
+    }
+
+    .hero-tagline {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+      line-height: 1.5;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+      max-width: 700px;
+    }
+
+    /* ===== WORK PAGE ===== */
+    .work-page {
+      padding: 80px 12px 0;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .bento-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #222;
+      cursor: pointer;
+      display: block;
+    }
+
+    .bento-item img.item-static {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.3s;
+    }
+
+    .bento-item video.item-hover {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .bento-item:hover video.item-hover { opacity: 1; }
+    .bento-item:hover img.item-static { opacity: 0; }
+
+    .bento-item .item-label {
+      position: absolute;
+      bottom: 18px;
+      left: 20px;
+      font-family: 'Racing Sans One', sans-serif;
+      font-weight: 400;
+      font-size: clamp(1rem, 1.6vw, 1.35rem);
+      color: #fff;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+      z-index: 2;
+      text-transform: uppercase;
+    }
+
+    /* Span helpers */
+    .col-span-2 { grid-column: span 2; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .bento-grid { grid-template-columns: repeat(2, 1fr); }
+      .col-span-2 { grid-column: span 2; }
+    }
+
+    @media (max-width: 560px) {
+      .bento-grid { grid-template-columns: 1fr; }
+      .col-span-2 { grid-column: span 1; }
+    }
+
+    /* ===== ABOUT PAGE ===== */
+    .about-page {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px var(--side);
+      overflow: hidden;
+    }
+
+    .about-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .about-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.4;
+    }
+
+    .about-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 720px;
+    }
+
+    .about-content h1 {
+      font-family: 'Racing Sans One', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 400;
+      margin-bottom: 32px;
+      line-height: 1.1;
+    }
+
+    .about-content p {
+      font-size: clamp(0.95rem, 1.3vw, 1.125rem);
+      line-height: 1.7;
+      color: var(--fg-dim);
+      margin-bottom: 16px;
+    }
+
+    .about-content p strong { color: var(--fg); font-weight: 600; }
+
+    .about-content .about-statement {
+      font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+      font-weight: 500;
+      color: var(--fg);
+      margin-top: 24px;
+      margin-bottom: 8px;
+    }
+
+    .about-owner {
+      font-size: 0.8rem;
+      color: var(--fg-dim);
+      font-style: italic;
+      margin-top: 20px;
+      margin-bottom: 28px;
+    }
+
+    .about-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+
+    .btn-outline {
+      border: 1.5px solid rgba(255,255,255,0.35);
+      background: transparent;
+      color: var(--fg);
+    }
+    .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+
+    .btn-solid {
+      border: 1.5px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color: var(--fg);
+    }
+    .btn-solid:hover { background: rgba(255,255,255,0.15); }
+
+    /* ===== LAB PAGE ===== */
+    .lab-page { padding: 80px 12px 0; }
+
+    .lab-grid {
+      columns: 4;
+      column-gap: 12px;
+    }
+
+    .lab-item {
+      break-inside: avoid;
+      margin-bottom: 12px;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #111;
+    }
+
+    .lab-item video {
+      width: 100%;
+      display: block;
+    }
+
+    @media (max-width: 1024px) { .lab-grid { columns: 3; } }
+    @media (max-width: 768px) { .lab-grid { columns: 2; } }
+    @media (max-width: 480px) { .lab-grid { columns: 1; } }
+
+    /* ===== CONTACT MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+
+    .modal {
+      background: var(--bg);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 36px;
+      width: 90%;
+      max-width: 420px;
+      transform: translateY(20px);
+      transition: transform 0.3s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .modal-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      font-size: 1.4rem;
+      padding: 4px 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.1); }
+
+    .modal-desc {
+      font-size: 0.85rem;
+      color: var(--fg-dim);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .form-field {
+      width: 100%;
+      background: #2C2D2F;
+      border: 1px solid #414243;
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: var(--fg);
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+    .form-field::placeholder { color: var(--fg-dim); }
+    .form-field:focus { border-color: rgba(255,255,255,0.4); }
+
+    .form-submit {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      background: var(--fg);
+      color: var(--bg);
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+      transition: opacity 0.2s;
+    }
+    .form-submit:hover { opacity: 0.9; }
+
+    .modal-email {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: var(--fg-dim);
+    }
+    .modal-email a { color: var(--fg); font-weight: 600; text-decoration: underline; }
+
+    /* ===== FOOTER ===== */
+    .site-footer {
+      padding: 24px var(--side);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--fg-dim);
+      margin-top: 40px;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .footer-socials a {
+      color: var(--fg-dim);
+      font-size: 1.1rem;
+      transition: color 0.2s;
+    }
+
+    .footer-socials a:hover { color: var(--fg); }
+
+    .footer-socials svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* ===== PROJECT PAGE ===== */
+    .project-page {
+      padding: 120px 12px 0;
+    }
+
+    /* Text elements: centered column like superdesigners */
+    .project-page .proj-title {
+      font-family: 'Racing Sans One', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 400;
+      text-transform: uppercase;
+      line-height: 1.1;
+      max-width: 800px;
+      margin: 0 auto 24px;
+      text-align: center;
+    }
+
+    .project-page .proj-intro {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--fg-dim);
+      max-width: 700px;
+      margin: 0 auto 48px;
+      text-align: center;
+    }
+
+    .project-page .proj-section-label {
+      font-family: 'Racing Sans One', sans-serif;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      max-width: 700px;
+      margin: 64px auto 16px;
+      color: var(--fg);
+      text-align: center;
+    }
+
+    .project-page .proj-text {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--fg-dim);
+      max-width: 700px;
+      margin: 0 auto 40px;
+      text-align: center;
+    }
+
+    /* Media elements: full width */
+    .project-page .proj-media {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .project-page .proj-media img,
+    .project-page .proj-media video {
+      width: 100%;
+      border-radius: 16px;
+      display: block;
+    }
+
+    .project-page .proj-media iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: none;
+      border-radius: 16px;
+      display: block;
+    }
+
+    .project-page .proj-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .project-page .proj-grid-2 img {
+      width: 100%;
+      border-radius: 16px;
+      display: block;
+    }
+
+    .project-page .proj-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .project-page .proj-grid-3 img {
+      width: 100%;
+      border-radius: 16px;
+      display: block;
+    }
+
+    /* Credits + next: centered */
+    .project-page .proj-credits {
+      max-width: 700px;
+      margin: 64px auto 40px;
+      font-size: 0.85rem;
+      color: var(--fg-dim);
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    .project-page .proj-credits a {
+      color: var(--fg);
+      text-decoration: underline;
+    }
+
+    .project-page .proj-next {
+      padding: 60px 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-top: 60px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .project-page .proj-next-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--fg-dim);
+      margin-bottom: 12px;
+    }
+
+    .project-page .proj-next-link {
+      font-family: 'Racing Sans One', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      text-transform: uppercase;
+      color: var(--fg);
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .project-page .proj-next-link:hover { opacity: 0.7; }
+
+    @media (max-width: 768px) {
+      .project-page .proj-grid-2 { grid-template-columns: 1fr; }
+      .project-page .proj-grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .nav-right { gap: 18px; }
+      .nav-link { font-size: 0.85rem; }
+      .nav-holla { padding: 8px 16px; font-size: 0.85rem; }
+      .nav-logo svg { height: 22px; }
+    }
+
+    @media (max-width: 480px) {
+      .masonry-grid { columns: 1; }
+    }
+
+    .page { animation: pageIn 0.4s ease; }
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="site-nav">
+    <div class="nav-logo" data-nav="home">
+      <svg viewBox="0 0 1773.89 253.8" xmlns="http://www.w3.org/2000/svg"><g><path d="M298.95,211.5c-5.08,23.27-34.69,42.3-66.41,42.3H49.37c-31.73,0-53.72-19.03-48.65-42.3L36.68,42.3C41.34,19.04,71.37,0,103.1,0h183.16c31.73,0,53.3,19.04,48.65,42.3l-11.42,52.88c-1.69,8.88-10.57,15.65-19.03,15.65h-90.95c-8.88,0-14.38-6.77-12.69-15.65l5.92-28.34c3.81-16.5-5.08-30.03-19.46-30.03s-29.61,13.54-33.42,30.03l-25.38,120.13c-3.38,16.5,5.5,29.61,20.3,29.61s29.19-13.11,32.57-29.61l5.92-28.34c2.11-8.88,10.57-16.07,19.46-16.07h90.95c8.46,0,14.38,7.19,12.27,16.07l-11,52.88Z"/><path d="M614.08,211.5c-5.08,23.27-34.69,42.3-66.41,42.3h-183.16c-31.73,0-53.72-19.03-48.65-42.3l35.96-169.2C356.47,19.04,386.51,0,418.23,0h183.16c31.73,0,53.3,19.04,48.65,42.3l-35.96,169.2ZM521.87,66.83c3.81-16.5-5.08-30.03-19.88-30.03s-29.19,13.54-32.99,30.03l-25.38,120.13c-3.38,16.5,5.5,29.61,19.88,29.61s29.61-13.11,32.99-29.61l25.38-120.13Z"/><path d="M942.33,238.15c-1.69,8.46-9.73,15.65-18.61,15.65h-77.83c-4.65,0-9.31-.42-13.54-3.38,0,0-3.81-2.96-6.35-8.46l-48.65-118.02-24.53,114.21c-1.69,8.46-9.73,15.65-18.19,15.65h-97.29c-8.46,0-13.96-7.19-12.27-15.65l47.38-222.5c1.69-8.46,10.15-15.65,18.61-15.65h79.95c9.31,0,14.38,3.38,18.19,11l47.38,121.82,24.96-117.17c1.69-8.46,10.57-15.65,19.04-15.65h96.87c8.88,0,13.96,7.19,12.27,15.65l-47.38,222.5Z"/><g><path d="M1201.63,237.73c-3.81,8.88-13.54,16.07-22.42,16.07h-138.75c-8.88,0-16.5-7.19-16.07-16.07l-26.23-222.08c0-8.46,7.19-15.65,15.65-15.65h96.02c8.88,0,15.65,7.19,15.65,15.65l1.27,158.2,68.1-158.2c3.38-8.46,13.54-15.65,22.42-15.65h96.02c8.46,0,12.27,7.19,8.88,15.65l-120.56,222.08Z"/><path d="M1406.36,237.73c-2.12,8.88-10.58,16.07-19.04,16.07h-90.95c-8.88,0-14.81-7.19-12.69-16.07l46.95-222.08c1.69-8.46,10.58-15.65,19.46-15.65h90.95c8.46,0,13.96,7.19,12.27,15.65l-46.95,222.08Z"/><path d="M1737.15,211.5c-5.92,27.92-40.61,42.3-64.72,42.3h-197.12c-24.11,0-52.45-14.38-46.53-42.3l6.77-31.73c1.69-8.46,10.15-15.65,18.61-15.65h98.14c13.54,0,12.69,11.85,10.15,22.84-3.38,15.23,3.81,29.61,19.03,29.61s28.76-14.38,32.15-29.61c2.11-10.58,2.54-19.03-2.96-27.5-4.23-6.34-10.57-13.54-19.03-14.81l-77.41-11.42c-34.26-5.08-64.72-20.73-55.41-62.6l5.92-28.34c5.92-27.92,40.18-42.3,64.3-42.3h197.12c24.11,0,52.88,14.38,46.95,42.3l-6.77,31.73c-1.69,8.46-10.15,15.65-19.03,15.65h-97.71c-13.54,0-12.69-11.84-10.57-22.84,3.38-15.23-3.38-30.03-19.03-30.03s-28.77,14.81-32.15,30.03c-4.65,22.42-.42,38.92,21.57,42.3l77.83,11.42c37.65,5.5,65.57,16.5,55.84,62.6l-5.92,28.34Z"/></g></g></svg>
+    </div>
+    <div class="nav-right">
+      <span class="nav-link" data-nav="work">WORK</span>
+      <span class="nav-link" data-nav="about">ABOUT</span>
+      <span class="nav-link" data-nav="lab">LAB</span>
+      <span class="nav-holla" id="openContact"><i class="fa-regular fa-envelope"></i> HOLLA</span>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <section class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-video">
+        <video id="heroVideo" autoplay muted loop playsinline src="https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/2025-Header-Video-Web.mp4?rlkey=hgzywak5bzslxcejbgyks4lb8&amp;dl=0" style="background:#111;"></video>
+      </div>
+      <div class="hero-content">
+        <p class="hero-tagline">CONceptualising &amp; VISualising projects that leave a lasting impression.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="page" id="page-work">
+    <div class="work-page">
+      <div class="bento-grid" id="bentoGrid"></div>
+    </div>
+    <footer class="site-footer">
+      <span>Copyright © ConVis <script>document.write(new Date().getFullYear())</script> All Rights Reserved</span>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/convis.co/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://x.com/convis_co" target="_blank" title="X"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.linkedin.com/company/convis-co/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://www.youtube.com/@ConVisCo" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://bsky.app/profile/convis.co" target="_blank" title="Bluesky"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.785 2.627 3.584 3.493 6.173 3.16-.375.477-2.806 3.16.263 6.593 3.634 4.075 6.94-1.608 6.94-1.608s3.305 5.683 6.94 1.608c3.068-3.434.637-6.116.262-6.593 2.59.333 5.39-.533 6.174-3.16.245-.829.624-5.789.624-6.479 0-.688-.139-1.86-.902-2.203-.659-.3-1.664-.62-4.3 1.24C20.046 4.747 17.087 8.686 12 10.8z"/></svg></a>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="page" id="page-about">
+    <div class="about-page">
+      <div class="about-bg"><img src="https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/c22aed8b-b787-4d17-91e4-e85511829051_rwc_0x0x1768x254x4096.png?h=d11cda2b894f8ec3b2b5a5c01667011d" alt="" onerror="this.remove();"></div>
+      <div class="about-content">
+        <h1>About</h1>
+        <p>I'm a motion designer and 3D artist creating bold, cinematic visuals through animation and design. My work blends storytelling and detail to bring products, brands, and ideas to life.</p>
+        <p><strong>ConVis</strong> set out to push creative boundaries and make top-tier animation accessible to anyone — from indie startups to global brands.</p>
+        <p class="about-statement">Let's create something unforgettable.</p>
+        <p class="about-owner">This site is owned and operated by Tuzo James Agudah.</p>
+        <div class="about-buttons">
+          <button class="btn btn-outline" id="aboutContact"><i class="fa-regular fa-envelope"></i> Get in Touch</button>
+          <button class="btn btn-solid" data-nav="work">View My Work <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+    <footer class="site-footer">
+      <span>Copyright © ConVis <script>document.write(new Date().getFullYear())</script> All Rights Reserved</span>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/convis.co/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://x.com/convis_co" target="_blank" title="X"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.linkedin.com/company/convis-co/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://www.youtube.com/@ConVisCo" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://bsky.app/profile/convis.co" target="_blank" title="Bluesky"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.785 2.627 3.584 3.493 6.173 3.16-.375.477-2.806 3.16.263 6.593 3.634 4.075 6.94-1.608 6.94-1.608s3.305 5.683 6.94 1.608c3.068-3.434.637-6.116.262-6.593 2.59.333 5.39-.533 6.174-3.16.245-.829.624-5.789.624-6.479 0-.688-.139-1.86-.902-2.203-.659-.3-1.664-.62-4.3 1.24C20.046 4.747 17.087 8.686 12 10.8z"/></svg></a>
+      </div>
+    </footer>
+  </section>
+
+  <!-- LAB -->
+  <section class="page" id="page-lab">
+    <div class="lab-page">
+      <div class="lab-grid" id="labGrid"></div>
+    </div>
+    <footer class="site-footer">
+      <span>Copyright © ConVis <script>document.write(new Date().getFullYear())</script> All Rights Reserved</span>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/convis.co/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://x.com/convis_co" target="_blank" title="X"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.linkedin.com/company/convis-co/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://www.youtube.com/@ConVisCo" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://bsky.app/profile/convis.co" target="_blank" title="Bluesky"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.785 2.627 3.584 3.493 6.173 3.16-.375.477-2.806 3.16.263 6.593 3.634 4.075 6.94-1.608 6.94-1.608s3.305 5.683 6.94 1.608c3.068-3.434.637-6.116.262-6.593 2.59.333 5.39-.533 6.174-3.16.245-.829.624-5.789.624-6.479 0-.688-.139-1.86-.902-2.203-.659-.3-1.664-.62-4.3 1.24C20.046 4.747 17.087 8.686 12 10.8z"/></svg></a>
+      </div>
+    </footer>
+  </section>
+
+
+
+
+  <!-- PROJECT: THE TAPE -->
+  <section class="page" id="page-project-the-tape">
+    <div class="project-page">
+
+      <h1 class="proj-title">THE TAPE</h1>
+      <p class="proj-intro">The Tape is a short 3D horror animation inspired by the psychological tension and narrative tone of Alan Wake.</p>
+
+      <div class="proj-media">
+        <video autoplay muted loop playsinline src="https://dl.dropboxusercontent.com/scl/fi/dgseifdnefu182psscic4/The-Tape.mp4?rlkey=6vzf0ifwebow5qa0518al1olw&dl=0" style="background:#111;"></video>
+      </div>
+
+      <h2 class="proj-section-label">PROJECT OVERVIEW</h2>
+      <p class="proj-text">The Tape is a short 3D horror animation inspired by the psychological tension and narrative tone of Alan Wake. The project was created as part of a Halloween series exploring cinematic storytelling through atmosphere, sound design, and first-person immersion. It blends subtle environmental detail with narrative voice-over and timed jump scares to create a compact yet impactful horror experience.</p>
+
+      <h2 class="proj-section-label">STORYBOARD</h2>
+      <div class="proj-media">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/3t8xunbw9ax034feeju6d/46fab34f-9ce5-4fec-83b9-030ad6e92ae0.jpg?rlkey=xi52h4gbaapswgdms779wmr0a&dl=0" alt="Storyboard" loading="lazy">
+      </div>
+
+      <h2 class="proj-section-label">PROCESS</h2>
+      <p class="proj-text">The piece was developed from an original 30-second script written in the style of Alan Wake’s introspective narration. The goal was to evoke unease through pacing, lighting, and sound rather than overt visual shock. Each scene was carefully designed in a first-person perspective to pull the viewer directly into the story. Using a mix of still frames, animated elements, and controlled motion, the project balanced realism with stylized tension. The eerie score was composed and later remixed into a darker trap variation for the behind-the-scenes feature, emphasizing the connection between cinematic horror and modern music production.</p>
+
+      <h2 class="proj-section-label">BEHIND THE SCENES</h2>
+      <div class="proj-media">
+        <video autoplay muted loop playsinline src="https://dl.dropboxusercontent.com/scl/fi/dgseifdnefu182psscic4/The-Tape.mp4?rlkey=6vzf0ifwebow5qa0518al1olw&dl=0" style="background:#111;"></video>
+      </div>
+
+      <h2 class="proj-section-label">STILL FRAMES</h2>
+
+      <!-- Row 1: full width -->
+      <div class="proj-media">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/yqymogf4knonczcfzgapf/Project_Trick-or-Treat_2025-10-28_15.06.10.png?rlkey=9vcakml25j7vxvjv2zv6qkx3h&dl=0" alt="Still 1" loading="lazy">
+      </div>
+
+      <!-- Row 2: two images -->
+      <div class="proj-grid-2">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/kjy3fop6l55g9gwmbes54/Project_Trick-or-Treat_2025-10-28_15.06.18.png?rlkey=llk2iwp7yauux8pw50iawxj6g&dl=0" alt="Still 2" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/mxb939kao18i48lzf9m4b/Project_Trick-or-Treat_2025-10-28_15.06.22.png?rlkey=vz2qe336mx0ngnf0vxt9xuyar&dl=0" alt="Still 3" loading="lazy">
+      </div>
+
+      <!-- Row 3: three images -->
+      <div class="proj-grid-3">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/un7pd4sumag9qarlhd4db/Project_Trick-or-Treat_2025-10-28_15.06.32.png?rlkey=q37w5tfbhiff92eo346zxmaj6&dl=0" alt="Still 4" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/b3hw39vc3toc0gghdmohl/Project_Trick-or-Treat_2025-10-28_15.06.36.png?rlkey=okidqbt8iz507mxdq62tdvut3&dl=0" alt="Still 5" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/0m7zwaxzetlgxh7cg992r/Project_Trick-or-Treat_2025-10-28_15.06.45.png?rlkey=wjx0j7qd6pff1z2jd2j0att16&dl=0" alt="Still 6" loading="lazy">
+      </div>
+
+      <!-- Row 4: full width -->
+      <div class="proj-media">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/cmnl56z5fng7aji3g973r/Project_Trick-or-Treat_2025-10-28_15.06.49.png?rlkey=kqhwb9d8mjhs2ecpd8hmbz6bb&dl=0" alt="Still 7" loading="lazy">
+      </div>
+
+      <!-- Row 5: two images -->
+      <div class="proj-grid-2">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/2wjww6dbsao1ullkx2acj/Project_Trick-or-Treat_2025-10-28_15.07.00.png?rlkey=mh2gpd2ewyulm2opjv54rtaqk&dl=0" alt="Still 8" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/br4knzxmu24ybqdt2ulnj/Project_Trick-or-Treat_2025-10-28_15.07.05.png?rlkey=7nb3h4k5xp7cxv353znpp07yr&dl=0" alt="Still 9" loading="lazy">
+      </div>
+
+      <!-- Row 6: full width -->
+      <div class="proj-media">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/jib0nnm0cxeb3hge6zqtg/Project_Trick-or-Treat_2025-10-28_15.07.14.png?rlkey=evtmlygqp512jnzpufg6xash4&dl=0" alt="Still 10" loading="lazy">
+      </div>
+
+      <!-- Row 7: three images -->
+      <div class="proj-grid-3">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/wof1zvkxwtq3e2hgmcdx2/Project_Trick-or-Treat_2025-10-28_15.07.27.png?rlkey=rk4sjb5cgjc2tna0h511vvgrj&dl=0" alt="Still 11" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/my021jdbijpee7xo4jw96/Project_Trick-or-Treat_2025-10-28_15.07.36.png?rlkey=ays3o2fh603gnyg4r9sq3jkg0&dl=0" alt="Still 12" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/18aho1xjvlbh7e476lc64/Project_Trick-or-Treat_2025-10-28_15.07.47.png?rlkey=12nsgh9lsdtc5ahuqyifrh442&dl=0" alt="Still 13" loading="lazy">
+      </div>
+
+      <!-- Row 8: full width -->
+      <div class="proj-media">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/925q61ozunwqoyka2xr92/Project_Trick-or-Treat_2025-10-28_15.08.14.png?rlkey=kl5f2afjwevdxp125ihbaqvff&dl=0" alt="Still 14" loading="lazy">
+      </div>
+
+      <h2 class="proj-section-label">OUTCOME</h2>
+      <p class="proj-text">The final animation captures a haunting, cinematic experience where narrative, sound, and design converge. The result is a short but immersive piece that feels part film, part nightmare — showcasing how atmosphere, composition, and pacing can drive emotion even within a minimal runtime. Trick or Treat – The Tape stands as both a creative experiment in storytelling and a technical exercise in mood-driven animation.</p>
+
+      <div class="proj-media">
+        <video autoplay muted loop playsinline src="https://dl.dropboxusercontent.com/scl/fi/dgseifdnefu182psscic4/The-Tape.mp4?rlkey=6vzf0ifwebow5qa0518al1olw&dl=0" style="background:#111;"></video>
+      </div>
+
+      <div class="proj-credits">
+        <strong style="color:var(--fg);">CREDIT</strong><br><br>
+        VCR Model: twunnyphaiv on Sketchfab<br>
+        <a href="https://sketchfab.com/3d-models/vcr-player-98951dfd481b432b883b128222ea24ae" target="_blank">sketchfab.com/3d-models/vcr-player</a><br><br>
+        TV Model: Timothy Ahene on Sketchfab<br>
+        <a href="https://sketchfab.com/3d-models/crt-tv-9ba4baa106e64319a0b540cf0af5aa9e" target="_blank">sketchfab.com/3d-models/crt-tv</a><br><br>
+        TV Cabinet Model: 杭州维界科技有限公司 on Sketchfab<br>
+        <a href="https://sketchfab.com/3d-models/tv-cabinet-fec1a6ba697a4fd096019a1f25ce52de" target="_blank">sketchfab.com/3d-models/tv-cabinet</a>
+      </div>
+
+      <div class="proj-next">
+        <div class="proj-next-label">NEXT PROJECT</div>
+        <div class="proj-next-link" data-nav="project-critor">CRITOR &rarr;</div>
+      </div>
+
+    </div>
+    <footer class="site-footer">
+      <span>Copyright © ConVis <script>document.write(new Date().getFullYear())</script> All Rights Reserved</span>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/convis.co/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://x.com/convis_co" target="_blank" title="X"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.linkedin.com/company/convis-co/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://www.youtube.com/@ConVisCo" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://bsky.app/profile/convis.co" target="_blank" title="Bluesky"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.785 2.627 3.584 3.493 6.173 3.16-.375.477-2.806 3.16.263 6.593 3.634 4.075 6.94-1.608 6.94-1.608s3.305 5.683 6.94 1.608c3.068-3.434.637-6.116.262-6.593 2.59.333 5.39-.533 6.174-3.16.245-.829.624-5.789.624-6.479 0-.688-.139-1.86-.902-2.203-.659-.3-1.664-.62-4.3 1.24C20.046 4.747 17.087 8.686 12 10.8z"/></svg></a>
+      </div>
+    </footer>
+  </section>
+
+
+  <!-- PROJECT: CRITOR -->
+  <section class="page" id="page-project-critor">
+    <div class="project-page">
+
+      <h1 class="proj-title">CRITOR</h1>
+      <p class="proj-intro">Critor is a hardware wallet aimed at serious self-custody users. The brief was to create a hero animation that would introduce the device before launch.</p>
+
+      <div class="proj-media">
+        <iframe src="https://player.vimeo.com/video/1098370353?badge=0&autopause=0&player_id=0&app_id=58479" width="1920" height="1080" frameborder="0" allow="autoplay; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <h2 class="proj-section-label">PROJECT OVERVIEW</h2>
+      <p class="proj-text">Critor needed a launch teaser that felt more like a cinematic title-sequence than a conventional product spin. The concept was to place the wallet at the centre of a constantly shifting “data-storm”: glowing price streams, coordinate read-outs, crystalline prisms and robotic arms. The aim was to dramatise two ideas at once—unbreakable physical security and high-speed digital connectivity.</p>
+
+      <h2 class="proj-section-label">STORYBOARD</h2>
+      <div class="proj-media">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/p9iufmcvtq2qs5ygnbyqj/Storyboard.png?rlkey=hofh3t296gz4ubiuzzppw3b5u&dl=0" alt="Critor Storyboard" loading="lazy">
+      </div>
+
+      <h2 class="proj-section-label">PROCESS</h2>
+      <p class="proj-text">I mapped the story in nine seamless beats, sketching a single continuous camera path that threads through each moment using match cuts—close-ups, hand-off, chain repetition, and final hero pedestal—so the viewer never experiences a hard cut. During look-development I balanced the wallet’s matte blacks against an electric cyan-blue environment, layering procedural rubber grain, brushed-metal sheens, diffraction shards, and pulsing light trails to evoke a “data storm” swirling around the device. For the final animation each scene element—coordinate read-outs, tracking boxes, prisms, robotic arms, and liquid-shader hands—was timed to the master camera move, allowing text and light to drift naturally across the lens while keeping the wallet perfectly sharp and centre-frame. The result is a fluid animation that feels equal parts product reveal and cinematic title sequence.</p>
+
+      <h2 class="proj-section-label">STYLEFRAMES</h2>
+
+      <div class="proj-media">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/g9fbdibew6x2m0ibj6dtf/Project_Critor-RAW_2025-07-03_05.13.23.png?rlkey=76vecplepnt3bqmj1h1cqo004&dl=0" alt="Styleframe 1" loading="lazy">
+      </div>
+
+      <div class="proj-grid-2">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/mkgatk4t609met9uac0bq/Project_Critor-RAW_2025-07-03_05.13.31.png?rlkey=di2mmwhd73ips27v25sehwrc9&dl=0" alt="Styleframe 2" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/m3sbupdeluq1z8sedn0s5/Project_Critor-RAW_2025-07-03_05.13.37.png?rlkey=bsmj385luvyo16y87azi925pb&dl=0" alt="Styleframe 3" loading="lazy">
+      </div>
+
+      <div class="proj-grid-3">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/c9r69gznl6zqapksndxid/Project_Critor-RAW_2025-07-03_05.13.42.png?rlkey=36hlp0wgv4qjs6pt7fmsofhr2&dl=0" alt="Styleframe 4" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/ihep6dccq2c08n7hm154d/Project_Critor-RAW_2025-07-03_05.13.52.png?rlkey=4usago8cc81l1hrxvz66pcwjl&dl=0" alt="Styleframe 5" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/1ez7a07cpwkkyz113tigl/Project_Critor-RAW_2025-07-03_05.14.00.png?rlkey=6xwbl8gji9ov9zs7v8hnpxxhz&dl=0" alt="Styleframe 6" loading="lazy">
+      </div>
+
+      <div class="proj-media">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/ucx11ya4yultz3006v30q/Project_Critor-RAW_2025-07-03_05.14.15.png?rlkey=2547piyc450106rsp28jv00ez&dl=0" alt="Styleframe 7" loading="lazy">
+      </div>
+
+      <div class="proj-grid-2">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/8eusfd4u6mgfpcw7vs37s/Project_Critor-RAW_2025-07-03_05.14.48.png?rlkey=p4wxnm2coj4cr9xpabw8cpg6r&dl=0" alt="Styleframe 8" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/c74dkiz6lo77bfjkb8pvs/Project_Critor-RAW_2025-07-03_05.15.04.png?rlkey=3mxptpymgmnpp163mbi8lnxg9&dl=0" alt="Styleframe 9" loading="lazy">
+      </div>
+
+      <div class="proj-grid-3">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/6ipmcfpad0t45yyp1hcfp/Project_Critor-RAW_2025-07-03_05.15.17.png?rlkey=8vuscsen0dklwxk2ifntkorup&dl=0" alt="Styleframe 10" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/b67ve4e8hqr85k6vkz5go/Project_Critor-RAW_2025-07-03_05.15.26.png?rlkey=fqsf5b1ebizpjzht2i45d6gog&dl=0" alt="Styleframe 11" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/fb6i0gsrufees9q73i87p/Project_Critor-RAW_2025-07-03_05.15.35.png?rlkey=nk36igqwb608bdgmksm3rnkew&dl=0" alt="Styleframe 12" loading="lazy">
+      </div>
+
+      <h2 class="proj-section-label">VIEWPORT RENDER</h2>
+      <div class="proj-media">
+        <iframe src="https://player.vimeo.com/video/1098702375?badge=0&autopause=0&player_id=0&app_id=58479" width="1920" height="1080" frameborder="0" allow="autoplay; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <h2 class="proj-section-label">OUTCOME</h2>
+      <p class="proj-text">The finished animation frames Critor as a calm anchor amid motion: cascading cryptocurrency tickers sweep across the scene in a subtle “Matrix” motif, while iridescent crystal shards glint to suggest stored value. That interplay of kinetic data and tactile materials underscores the wallet’s promise—digital wealth, physically protected. Visually rich yet concise, the piece serves as a launch teaser that sparks curiosity.</p>
+
+      <div class="proj-media">
+        <video autoplay muted loop playsinline src="https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Critor.mp4?rlkey=700c0heiqfubkei5vv17i47x9&dl=0" style="background:#111;"></video>
+      </div>
+
+      <div class="proj-next">
+        <div class="proj-next-label">NEXT PROJECT</div>
+        <div class="proj-next-link" data-nav="project-hen-titan">HEN TITAN &rarr;</div>
+      </div>
+
+    </div>
+    <footer class="site-footer">
+      <span>Copyright © ConVis <script>document.write(new Date().getFullYear())</script> All Rights Reserved</span>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/convis.co/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://x.com/convis_co" target="_blank" title="X"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.linkedin.com/company/convis-co/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://www.youtube.com/@ConVisCo" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://bsky.app/profile/convis.co" target="_blank" title="Bluesky"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.785 2.627 3.584 3.493 6.173 3.16-.375.477-2.806 3.16.263 6.593 3.634 4.075 6.94-1.608 6.94-1.608s3.305 5.683 6.94 1.608c3.068-3.434.637-6.116.262-6.593 2.59.333 5.39-.533 6.174-3.16.245-.829.624-5.789.624-6.479 0-.688-.139-1.86-.902-2.203-.659-.3-1.664-.62-4.3 1.24C20.046 4.747 17.087 8.686 12 10.8z"/></svg></a>
+      </div>
+    </footer>
+  </section>
+
+
+  <!-- PROJECT: HEN TITAN -->
+  <section class="page" id="page-project-hen-titan">
+    <div class="project-page">
+
+      <h1 class="proj-title">HEN TITAN</h1>
+      <p class="proj-intro">For this project, I collaborated with Ask Tony Design to create a dynamic 3D animation for HEN (Hen Nozzles) that brings their firefighting tool—the Hen Titan—to life.</p>
+
+      <div class="proj-media">
+        <iframe src="https://player.vimeo.com/video/1090618320?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="1920" height="1080" frameborder="0" allow="autoplay; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <h2 class="proj-section-label">PROCESS</h2>
+      <p class="proj-text">I began by studying HEN’s CAD data to ensure accuracy in the 3D model. Once the base geometry was imported, I refined all critical components—the rotating base, the azimuth/elevation mechanisms, the adjustment ring with “Near” and “Far” detents, and the outlet nozzle tip—so that each part could articulate exactly as it would in real life. After finalizing the high-resolution model, I created PBR textures that balanced rugged, functional metal finishes with subtle wear marks. This gave the Titan a realistic, industrial look without feeling overly distressed.</p>
+
+      <h2 class="proj-section-label">STORYBOARD</h2>
+      <div class="proj-media">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/52oviyxtkndtmhgd895wm/f446e78a-491b-45b8-b723-161c23294608_rw_1920.jpg?rlkey=2dkqhevxg97ofxtm0rf8gu1qk&dl=0" alt="Hen Titan Storyboard" loading="lazy">
+      </div>
+
+      <h2 class="proj-section-label">STYLEFRAMES</h2>
+
+      <div class="proj-media">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/c0znn96lwz7pbmytckm85/2dd4978c-975d-47f6-861d-716a45f0192b_rw_1920.png?rlkey=hula01yfglpkwiywzbruw3sgd&dl=0" alt="Styleframe 1" loading="lazy">
+      </div>
+
+      <div class="proj-grid-2">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/y1m0o2ownzrpx8hzfbvad/4a5d8e20-85a0-4b5c-a8f1-91c119b3cfe4_rw_1920.png?rlkey=6m27hu3ehii2gkhryqi4rz14q&dl=0" alt="Styleframe 2" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/oky01r7ih2xj6eypx8v7j/1107a234-d4a0-4845-ad2c-0463d751e679_rw_1920.png?rlkey=e1735zgb4ee4wkylfpzot24uo&dl=0" alt="Styleframe 3" loading="lazy">
+      </div>
+
+      <div class="proj-grid-3">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/8t1y18magunxf7l2kmo4c/04bba934-e27c-4cb0-a93e-0d2f39774d69_rw_1920.png?rlkey=15adneoph4qyxvotuf8et7r74&dl=0" alt="Styleframe 4" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/l6x1872ydgf2xdfqtg2s8/c7c5cf4a-5afe-451c-9e86-3e020302a475_rw_1920.png?rlkey=2xstiqif262oh7i8x03g4lc8e&dl=0" alt="Styleframe 5" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/aroo107ozy678b9gf1fkj/72c6101f-b922-4430-a140-a46df82dbdc1_rw_1920.png?rlkey=4euxn7q6pkcl745yg1o23sgkb&dl=0" alt="Styleframe 6" loading="lazy">
+      </div>
+
+      <div class="proj-grid-2">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/p29erzpxuio8lxs36j8k7/74091656-4908-48f2-a98c-6e61f67511eb_rw_1920.png?rlkey=m5q0yfkn3p3e4yovxxtnhpeat&dl=0" alt="Styleframe 7" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/42edbndvglux73n1bnmsr/d5aa297e-11a4-4647-9e2c-7fa1c05f20c5_rw_1920.png?rlkey=be2n45b5mlaskaegm84swnmin&dl=0" alt="Styleframe 8" loading="lazy">
+      </div>
+
+      <h2 class="proj-section-label">BEHIND THE SCENES</h2>
+      <div class="proj-grid-3">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/kvsy1qs04kihcruyvp4he/731993a8-e13e-481f-aa6f-55b81c6ab95e_rw_1920.gif?rlkey=j9jzlolbz3nroje9b0obp3ll6&dl=0" alt="BTS 1" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/x0lfcu7tyy624bhwc1o1c/24107006-f6b9-4d36-81c3-504a7d67c64c_rw_1920.gif?rlkey=jijbcawtq9do1a8eyiq11fn4v&dl=0" alt="BTS 2" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/qu6jz6dm5c57nchrnm2iy/b9f34e1c-6138-4182-959b-05d40a8580b7_rw_1920.gif?rlkey=lhlyymmock26qvh9luh65xxbe&dl=0" alt="BTS 3" loading="lazy">
+      </div>
+
+      <h2 class="proj-section-label">OUTCOME</h2>
+      <p class="proj-text">The final animation runs just under 60 seconds and effectively balances real-world context with technical clarity. By visually demonstrating the Titan’s modular adjustability—both in how it mounts on a rig and how an operator can switch from pinpoint jet to full-coverage—the animation helps communicate the product’s key selling points in under a minute.</p>
+
+      <div class="proj-media">
+        <video autoplay muted loop playsinline src="https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Hen-Titan.mp4?rlkey=kwlvk4qjr6hkyfmlcn04f5cj4&dl=0" style="background:#111;"></video>
+      </div>
+
+      <div class="proj-next">
+        <div class="proj-next-label">NEXT PROJECT</div>
+        <div class="proj-next-link" data-nav="project-aeris">AERIS &rarr;</div>
+      </div>
+
+    </div>
+    <footer class="site-footer">
+      <span>Copyright © ConVis <script>document.write(new Date().getFullYear())</script> All Rights Reserved</span>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/convis.co/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://x.com/convis_co" target="_blank" title="X"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="https://www.linkedin.com/company/convis-co/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://www.youtube.com/@ConVisCo" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://bsky.app/profile/convis.co" target="_blank" title="Bluesky"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.785 2.627 3.584 3.493 6.173 3.16-.375.477-2.806 3.16.263 6.593 3.634 4.075 6.94-1.608 6.94-1.608s3.305 5.683 6.94 1.608c3.068-3.434.637-6.116.262-6.593 2.59.333 5.39-.533 6.174-3.16.245-.829.624-5.789.624-6.479 0-.688-.139-1.86-.902-2.203-.659-.3-1.664-.62-4.3 1.24C20.046 4.747 17.087 8.686 12 10.8z"/></svg></a>
+      </div>
+    </footer>
+  </section>
+
+<!-- CONTACT MODAL -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fa-regular fa-envelope"></i> Get in Touch</div>
+        <button class="modal-close" id="closeContact">&times;</button>
+      </div>
+      <p class="modal-desc">Ready to bring your vision to life? Let's discuss your project.</p>
+      <input type="text" class="form-field" placeholder="Your Name" id="formName">
+      <input type="email" class="form-field" placeholder="your@email.com" id="formEmail">
+      <textarea class="form-field" rows="4" placeholder="Tell me about your project..." id="formMessage"></textarea>
+      <button class="form-submit" id="formSubmit"><i class="fa-regular fa-paper-plane"></i> Send Message</button>
+      <div class="modal-email">Or email directly: <a href="/cdn-cgi/l/email-protection#c9a3a8a4acba89aaa6a7bfa0bae7aaa6"><span class="__cf_email__" data-cfemail="2c464d41495f6c4f43425a455f024f43">[email&#160;protected]</span></a></div>
+    </div>
+  </div>
+
+  <!-- footer is inside each non-home page section -->
+
+  <script>
+    const pages = document.querySelectorAll('.page');
+    const navItems = document.querySelectorAll('[data-nav]');
+
+    function navigateTo(page) {
+      pages.forEach(p => p.classList.remove('active'));
+      const target = document.getElementById('page-' + page);
+      if (target) {
+        target.classList.add('active');
+        window.scrollTo(0, 0);
+        history.pushState(null, '', '#' + page);
+      }
+    }
+
+    navItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateTo(item.dataset.nav);
+      });
+    });
+
+    window.addEventListener('popstate', () => {
+      const hash = location.hash.replace('#', '') || 'home';
+      navigateTo(hash);
+    });
+
+    const initialPage = location.hash.replace('#', '') || 'home';
+    navigateTo(initialPage);
+
+    const modal = document.getElementById('contactModal');
+    document.getElementById('openContact').addEventListener('click', () => modal.classList.add('open'));
+    document.getElementById('aboutContact').addEventListener('click', () => modal.classList.add('open'));
+    document.getElementById('closeContact').addEventListener('click', () => modal.classList.remove('open'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+
+    document.getElementById('formSubmit').addEventListener('click', async () => {
+      const btn = document.getElementById('formSubmit');
+      const name = document.getElementById('formName').value;
+      const email = document.getElementById('formEmail').value;
+      const message = document.getElementById('formMessage').value;
+      if (!name || !email || !message) { alert('Please fill in all fields.'); return; }
+
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('https://formspree.io/f/james@convis.co', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ name, email, message, _replyto: email, _subject: `Project Inquiry from ${name}` })
+        });
+        if (res.ok) {
+          btn.innerHTML = '<i class="fa-solid fa-check"></i> Sent!';
+          document.getElementById('formName').value = '';
+          document.getElementById('formEmail').value = '';
+          document.getElementById('formMessage').value = '';
+          setTimeout(() => { modal.classList.remove('open'); btn.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Send Message'; btn.disabled = false; }, 2000);
+        } else {
+          // Fallback to mailto if Formspree isn't set up yet
+          window.location.href = `mailto:james@convis.co?subject=Project Inquiry from ${encodeURIComponent(name)}&body=${encodeURIComponent(message)}%0A%0AFrom: ${encodeURIComponent(name)} (${encodeURIComponent(email)})`;
+          btn.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Send Message';
+          btn.disabled = false;
+          modal.classList.remove('open');
+        }
+      } catch (e) {
+        // Fallback to mailto on network error
+        window.location.href = `mailto:james@convis.co?subject=Project Inquiry from ${encodeURIComponent(name)}&body=${encodeURIComponent(message)}%0A%0AFrom: ${encodeURIComponent(name)} (${encodeURIComponent(email)})`;
+        btn.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Send Message';
+        btn.disabled = false;
+        modal.classList.remove('open');
+      }
+    });
+
+    // ===== DYNAMIC WORK GRID =====
+    // Each project: name, href, img, video (optional), cols (1 or 2), ratio (aspect-ratio string)
+    // Layout mirrors superdesigners.co/work — varied sizes, organic feel
+    // To add a project: just push to this array. The grid auto-assigns layout from the pattern cycle.
+    const projects = [
+      { name: "The Tape", href: "#project-the-tape", internal: true,
+        img: "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/The-Tape.png?rlkey=ousoncp51z4zf71o4j5ee1k89&dl=0",
+        video: "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/The-Tape.mp4?rlkey=6vzf0ifwebow5qa0518al1olw&dl=0" },
+      { name: "Critor", href: "#project-critor", internal: true,
+        img: "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Critor.png?rlkey=xczkpt3jmfmhtshl4vjsv3meo&dl=0",
+        video: "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Critor.mp4?rlkey=700c0heiqfubkei5vv17i47x9&dl=0" },
+      { name: "Hen Titan", href: "#project-hen-titan", internal: true,
+        img: "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Hen-Titan.png?rlkey=dez2lljef8cj586k9x6yvjqfa&dl=0",
+        video: "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Hen-Titan.mp4?rlkey=kwlvk4qjr6hkyfmlcn04f5cj4&dl=0" },
+      { name: "Aeris", href: "https://convis.co/aeris",
+        img: "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Aeris.png?rlkey=6g0yeo6besgcho4vma2cc5dcd&dl=0",
+        video: "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Aeris.mp4?rlkey=l8sm7tqqlqmn4t3dhtvofydln&dl=0" },
+      { name: "LuminaCore", href: "https://convis.co/luminacore",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/55a6b5d3-84e7-44b3-8774-b3460d627420_rwc_0x0x1916x1080x32.png?h=59b874dfa4c7b47089a5bc5acae8eb92" },
+      { name: "Virella", href: "https://convis.co/virella",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/af4ce944-7699-418b-9729-385bfad29075_rwc_0x0x1916x1080x32.jpg?h=cfb1e24c869fd5cc4da2a095ea72a8cd" },
+      { name: "Volition", href: "https://convis.co/volition-nft-collapse",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/8a2cb75b-47be-4b82-b456-1977f40a9c6d_rwc_0x0x1916x1080x32.png?h=ff27b1196729d429094372e630227d6e" },
+      { name: "Verdant Vigor", href: "https://convis.co/verdant-vigor",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/9d76166b-6e49-4277-b9b4-06873d731e68_rwc_0x780x1080x608x32.png?h=1e452e56f8f68bd01ff8b6b7d2ceb657" },
+      { name: "Éclat Radiance", href: "https://convis.co/eclat-radiance",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/5342e2fa-d9d9-42db-8054-7b62f89ff46b_rwc_0x0x1916x1080x32.png?h=76590751fe299e503cc69c7ac64a64b2" },
+      { name: "Resonant Tech", href: "https://convis.co/resonant-tech",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/f48e285f-01c3-4fee-95c0-16f2b8be7e09_rwc_0x0x1916x1080x32.png?h=80f361609160c2e9ac9959c120c0a96d" },
+      { name: "Bamboom", href: "https://convis.co/bamboom",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/3f965d55-c121-473a-bf25-8b6c7d63b97b_rwc_0x0x1916x1080x32.png?h=816e82ca7a0e2149b9d64533d592b919" },
+      { name: "Starmonic", href: "https://convis.co/starmonic",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/8d016b07-7819-4985-b603-560168fb63dc_rwc_0x0x1916x1080x32.png?h=1b90afe2c31252c120e42468af4f8321" },
+      { name: "Stellar Slumber", href: "https://convis.co/stellar-slumber",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/0110a8af-39a8-472f-a48a-87cd87813405_rwc_0x0x1916x1080x32.png?h=760d33146984cd077106f3ef62dc23dd" },
+      { name: "Duel", href: "https://convis.co/duel",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/75ced3e4-5641-418a-a0bd-c502b9c9fbc8_rwc_0x0x1916x1080x32.png?h=69f4d849a05d23626527944cda52eeaa" },
+      { name: "Wxllnxss", href: "https://convis.co/wxllnxss",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/6ef40e45-375f-4355-ae78-aaecc27df48c_rwc_0x0x1916x1080x32.png?h=1133f22c6c594a0325f10a70dcb20bd5" },
+      { name: "Darach Whisky Co.", href: "https://convis.co/darach-whisky-co",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/d0d9469d-3115-46d1-8a90-322b66e9238b_rwc_0x0x1916x1080x32.png?h=b837aa413ae8fd27bb752296e80e8628" },
+      { name: "Brand Britain", href: "https://convis.co/brand-britain",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/a9a147f9-dee1-401e-b798-956174f946d9_rwc_0x418x1920x1082x32.png?h=31118d1217357806698cb0a74a2e0775" },
+      { name: "Melo", href: "https://convis.co/melo",
+        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/8f06720e-73fe-4510-a5ff-eec7369cd04d_rwc_0x0x1916x1080x32.jpg?h=419f5b4ba0aa64b0f76d1be8ccbb3ff4" },
+    ];
+
+    // Superdesigners layout: repeating slot patterns
+    // Each slot: { cols: 1|2, ratio: "W/H" }
+    // Analyzed from the superdesigners.co/work screenshot:
+    // Row 1: 1col tall, 2col short-wide  |  Row 2: 1col short, (gap), 2col wide
+    // Row 3: 1col tall, 2col short  |  Row 4: 2col wide, 1col tall  ...etc
+    const slotPatterns = [
+      { cols: 1, ratio: '4/5' },    // tall single
+      { cols: 2, ratio: '16/9' },   // wide double
+      { cols: 2, ratio: '16/9' },   // wide double
+      { cols: 1, ratio: '4/5' },    // tall single
+      { cols: 1, ratio: '1/1' },    // square
+      { cols: 1, ratio: '16/9' },   // landscape
+      { cols: 1, ratio: '4/5' },    // tall single
+      { cols: 2, ratio: '16/9' },   // wide double
+      { cols: 1, ratio: '4/5' },    // tall single
+      { cols: 1, ratio: '1/1' },    // square
+      { cols: 2, ratio: '4/3' },    // medium wide
+      { cols: 1, ratio: '4/5' },    // tall single
+    ];
+
+    function buildBentoGrid() {
+      const grid = document.getElementById('bentoGrid');
+      grid.innerHTML = '';
+
+      projects.forEach((p, i) => {
+        const slot = slotPatterns[i % slotPatterns.length];
+        const a = document.createElement('a');
+        a.className = 'bento-item' + (slot.cols === 2 ? ' col-span-2' : '');
+        a.href = p.href;
+        if (p.internal) {
+          a.addEventListener('click', (e) => { e.preventDefault(); navigateTo(p.href.replace('#','')); });
+        } else {
+          a.target = '_blank';
+        }
+        a.style.aspectRatio = slot.ratio;
+
+        const img = document.createElement('img');
+        img.className = 'item-static';
+        img.src = p.img;
+        img.alt = p.name;
+        img.loading = 'lazy';
+        a.appendChild(img);
+
+        if (p.video) {
+          const vid = document.createElement('video');
+          vid.className = 'item-hover';
+          vid.src = p.video;
+          vid.muted = true;
+          vid.loop = true;
+          vid.playsInline = true;
+          vid.preload = 'none';
+          a.appendChild(vid);
+          a.addEventListener('mouseenter', () => { vid.play().catch(() => {}); });
+          a.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0; });
+        }
+
+        const label = document.createElement('div');
+        label.className = 'item-label';
+        label.textContent = p.name;
+        a.appendChild(label);
+
+        grid.appendChild(a);
+      });
+    }
+
+    buildBentoGrid();
+
+    // ===== DYNAMIC LAB GRID =====
+    const labVideos = [
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Red-and-Blue.mp4?rlkey=yw59rr88wek7y6e5mqiqeehsk&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Red-and-White.mp4?rlkey=236k2uffx5i8bfhewhr590fff&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/MRI_White.mp4?rlkey=2vgwwkfn01bx2v0yqp1htttfm&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Dream-Logic.mp4?rlkey=pnwbp4kzor9svpqf2a3hoj4n5&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Firehorse.mp4?rlkey=da2ie7iqu3un643douatdnzgz&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Regenesis.mp4?rlkey=srrmfdel39rmftpugcvu70mxy&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/1.mp4?rlkey=sp5cnxmrt0vlqh83p3np3uao4&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/2.mp4?rlkey=fcpf07ztr5plzspjfcvt5dac6&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/3.mp4?rlkey=9rg7bu3p1bi83cxrucf2erjws&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4//80-LVL-VL.mp4?rlkey=41m5gi7d8a0418kft5unsp3r9&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Cosmic-Wind-BSK.mp4?rlkey=4vey3hkheaxyxdkh28hrt9qct&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Cyberpunk-Hallway_Main_multilayer-BSK.mp4?rlkey=67hibx7ipmwk3lnvu9khac9r8&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Egg-Crack-2-bsk.mp4?rlkey=v5e87o2zfghhaqassx4h7a1mb&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/MagneticField.mp4?rlkey=1rpfduv6unyxjxefcbmucljam&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/MagneticFieldDeviceBSKY.mp4?rlkey=csdfi62x0a5j39d0ptqp9dm3r&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Meadow.mp4?rlkey=hgi2vwx8nby232gajudro8usl&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Rndr.mp4?rlkey=ljmt1gkg7zrfwwfn3ewh0ivhb&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Solana.mp4?rlkey=tvz6ytjy07dy0uo40eojot414&dl=0",
+      "https://dl.dropboxusercontent.com/scl/fi/boiwh2zb2wvhu9ia9tpt4/Unplug-BSK.mp4?rlkey=k3p1rpvxkm8hexw50igk40b6u&dl=0",
+    ];
+
+    function buildLabGrid() {
+      const grid = document.getElementById('labGrid');
+      grid.innerHTML = '';
+      labVideos.forEach((url) => {
+        const div = document.createElement('div');
+        div.className = 'lab-item';
+        const vid = document.createElement('video');
+        vid.src = url;
+        vid.autoplay = true;
+        vid.muted = true;
+        vid.loop = true;
+        vid.playsInline = true;
+        vid.preload = 'metadata';
+        div.appendChild(vid);
+        grid.appendChild(div);
+      });
+    }
+
+    buildLabGrid();
+
+    // Video autoplay retry
+    const heroVid = document.getElementById('heroVideo');
+    if (heroVid) {
+      heroVid.play().catch(() => {
+        // Some browsers block autoplay — retry on first interaction
+        const playOnce = () => {
+          heroVid.play().catch(() => {});
+          document.removeEventListener('click', playOnce
