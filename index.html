@@ -222,7 +222,8 @@
       z-index: 0;
     }
 
-    .about-bg img {
+    .about-bg img,
+    .about-bg video {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -666,7 +667,7 @@
   <!-- ABOUT -->
   <section class="page" id="page-about">
     <div class="about-page">
-      <div class="about-bg"><img src="https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/c22aed8b-b787-4d17-91e4-e85511829051_rwc_0x0x1768x254x4096.png?h=d11cda2b894f8ec3b2b5a5c01667011d" alt="" onerror="this.remove();"></div>
+      <div class="about-bg"><video autoplay muted loop playsinline src="https://dl.dropboxusercontent.com/scl/fi/yi1l4j0faoiwgclhotb7p/Convis-Header.mp4?rlkey=nookaa81y9lelxxe3y1ddi3fh&dl=0"></video></div>
       <div class="about-content">
         <h1>About</h1>
         <p>I'm a motion designer and 3D artist creating bold, cinematic visuals through animation and design. My work blends storytelling and detail to bring products, brands, and ideas to life.</p>
@@ -1190,12 +1191,12 @@
 
       <h2 class="proj-section-label">PRODUCT SHOTS</h2>
       <div class="proj-media">
-        <img src="https://dl.dropboxusercontent.com/scl/fi/ky8sm6q9fqw17orq3cbr3/PS-1.jpg?rlkey=q0sokok4tbnpgrhlmenzqmu1b&dl=0" alt="Product 1" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/v7u1ade0a7qwo01wesbun/PS-2.jpg?rlkey=nyz1fc2mrn7niif4bqseasag3&dl=0" alt="Product Shot" loading="lazy">
       </div>
 
       <div class="proj-grid-2">
-        <img src="https://dl.dropboxusercontent.com/scl/fi/v7u1ade0a7qwo01wesbun/PS-2.jpg?rlkey=nyz1fc2mrn7niif4bqseasag3&dl=0" alt="Product 2" loading="lazy">
-        <img src="https://dl.dropboxusercontent.com/scl/fi/tvsppnqq8x4zpbzpafver/PS-3.jpg?rlkey=ytog7cio4yxbh2yxkf234dd0w&dl=0" alt="Product 3" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/ky8sm6q9fqw17orq3cbr3/PS-1.jpg?rlkey=q0sokok4tbnpgrhlmenzqmu1b&dl=0" alt="Product Shot" loading="lazy">
+        <img src="https://dl.dropboxusercontent.com/scl/fi/tvsppnqq8x4zpbzpafver/PS-3.jpg?rlkey=ytog7cio4yxbh2yxkf234dd0w&dl=0" alt="Product Shot" loading="lazy">
       </div>
 
       <h2 class="proj-section-label">THE OUTCOME</h2>
@@ -1512,7 +1513,7 @@
       btn.disabled = true;
 
       try {
-        const res = await fetch('https://formspree.io/f/james@convis.co', {
+        const res = await fetch('https://formspree.io/f/maqlkzlp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify({ name, email, message, _replyto: email, _subject: `Project Inquiry from ${name}` })
@@ -1569,7 +1570,8 @@
         img: "https://dl.dropboxusercontent.com/scl/fi/xcqi56ipuk8dcf56slcvr/Eclat-Radiance.png?rlkey=n85yodz1bdf5pm35654gnx7cy&dl=0",
         video: "https://dl.dropboxusercontent.com/scl/fi/gwtn8j5qec7xc38etjftu/Eclat-Radiance.mp4?rlkey=c09g0u4dsim3ddk877m6puhhm&dl=0" },
       { name: "Resonant Tech", href: "#project-resonant-tech", internal: true,
-        img: "https://cdn.myportfolio.com/56565d55-da4b-4b39-9b83-c7b9b1da3583/f48e285f-01c3-4fee-95c0-16f2b8be7e09_rwc_0x0x1916x1080x32.png?h=80f361609160c2e9ac9959c120c0a96d" },
+        img: "https://dl.dropboxusercontent.com/scl/fi/ec9zknrjai5lzyv6kz1hy/Resonant-Tech.png?rlkey=kipxqoqlo5hyj4nto1s7z1a81&dl=0",
+        video: "https://dl.dropboxusercontent.com/scl/fi/hqinn89jr4z8h26235xot/Resonant-Tech.mp4?rlkey=8z9kt9j8qc733b5hp607jka8u&dl=0" },
     ];
 
     // Superdesigners layout: repeating slot patterns
