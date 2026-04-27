@@ -139,12 +139,16 @@
     .site-nav {
       position: fixed;
       top: 0; left: 0; right: 0;
-      z-index: 100;
+      z-index: 200;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 20px var(--side);
       mix-blend-mode: difference;
+    }
+
+    .site-nav.menu-open {
+      mix-blend-mode: normal;
     }
 
     .nav-logo {
@@ -1712,12 +1716,14 @@
     burger.addEventListener('click', () => {
       burger.classList.toggle('active');
       mobileMenu.classList.toggle('open');
+      document.querySelector('.site-nav').classList.toggle('menu-open');
       document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
     });
 
     function closeMobileMenu() {
       burger.classList.remove('active');
       mobileMenu.classList.remove('open');
+      document.querySelector('.site-nav').classList.remove('menu-open');
       document.body.style.overflow = '';
     }
 
