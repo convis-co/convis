@@ -304,9 +304,10 @@
       position: relative;
       width: 100%;
       height: 100vh;
+      height: 100svh; /* keeps the tagline above mobile browser toolbars */
       overflow: hidden;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
     }
 
@@ -317,27 +318,30 @@
       background: #111;
     }
 
-    .hero-video video {
+    .hero-video iframe {
+      display: block;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      border: 0;
     }
 
     .hero-content {
       position: relative;
       z-index: 1;
+      pointer-events: none; /* the viewer behind follows the pointer */
       text-align: center;
-      padding: 0 var(--side);
+      padding: 0 var(--side) 28px;
       max-width: 1200px;
     }
 
     .hero-tagline {
       font-family: 'Inter', sans-serif;
       font-weight: 500;
-      font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+      font-size: 0.75rem;
       line-height: 1.5;
-      color: #fff;
-      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+      letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.75);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.6);
       max-width: 700px;
     }
 
@@ -885,7 +889,8 @@
   <section class="page active" id="page-home">
     <div class="hero">
       <div class="hero-video">
-        <video id="heroVideo" autoplay muted loop playsinline src="https://media.convis.co/extra/2025-Header-Video-Web.mp4" style="background:#111;"></video>
+        <!-- CONVIS GS viewer (convis-gs/, built from the CONVIS GS project; media on media.convis.co/convis-gs/): real-time path traced on desktop, the path traced loop video on phones -->
+        <iframe id="heroViewer" src="convis-gs/?embed=1" title="ConVis logo, path traced in real time" tabindex="-1" allow="autoplay"></iframe>
       </div>
       <div class="hero-content">
         <p class="hero-tagline">CONceptualising &amp; VISualising projects that leave a lasting impression.</p>
@@ -913,7 +918,7 @@
   <!-- ABOUT -->
   <section class="page" id="page-about">
     <div class="about-page">
-      <div class="about-bg"><video autoplay muted loop playsinline src="https://media.convis.co/Convis-Header.mp4"></video></div>
+      <div class="about-bg"><video class="inview-video" muted loop playsinline preload="none" data-src="https://media.convis.co/extra/2025-Header-Video-Web.mp4"></video></div>
       <div class="about-content">
         <h1>About</h1>
         <p>I'm a motion designer and 3D artist creating bold, cinematic visuals through animation and design. My work blends storytelling and detail to bring products, brands, and ideas to life.</p>
@@ -2237,20 +2242,6 @@
     }, { rootMargin: '200px 0px' });
     document.querySelectorAll('video.inview-video').forEach(v => inviewObserver.observe(v));
 
-    // Video autoplay retry
-    const heroVid = document.getElementById('heroVideo');
-    if (heroVid) {
-      heroVid.play().catch(() => {
-        // Some browsers block autoplay; retry on first interaction
-        const playOnce = () => {
-          heroVid.play().catch(() => {});
-          document.removeEventListener('click', playOnce);
-          document.removeEventListener('touchstart', playOnce);
-        };
-        document.addEventListener('click', playOnce);
-        document.addEventListener('touchstart', playOnce);
-      });
-    }
   </script>
 </body>
 </html>

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>CONVIS</title>
+	<link rel="icon" href="data:," />
+  <script type="module" crossorigin src="./assets/index-A7VYCzqx.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-D6SAGUpq.css">
+</head>
+<body>
+	<div id="stage">
+		<img id="poster" src="./data/poster.jpg" alt="" />
+		<div id="loading"><span id="loading-text">loading</span></div>
+	</div>
+	<div id="ui" class="hidden">
+		<div class="row">
+			<button id="play" title="Play / pause (space)">Pause</button>
+			<input id="scrub" type="range" min="0" max="239" step="1" value="0" />
+			<span id="frame">0</span>
+		</div>
+		<div class="row small">
+			<span id="mode">LIVE</span>
+			<label><input id="t-pt" type="checkbox" checked /> path tracing</label>
+			<label><input id="t-linger" type="checkbox" checked /> linger</label>
+			<label><input id="t-bloom" type="checkbox" checked /> bloom</label>
+			<label><input id="t-ao" type="checkbox" checked /> AO</label>
+			<label><input id="t-mb" type="checkbox" checked /> motion blur</label>
+			<span id="stats"></span>
+		</div>
+	</div>
+	<button id="ui-toggle" title="Show / hide controls (H)">⚙</button>
+</body>
+</html>
