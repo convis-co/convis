@@ -826,6 +826,31 @@
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* ===== PROJECT ZOOM TRANSITION ===== */
+    .zoom-overlay {
+      position: fixed;
+      z-index: 150;
+      overflow: hidden;
+      pointer-events: none;
+      background: #111;
+      will-change: top, left, width, height, border-radius;
+    }
+    .zoom-overlay img,
+    .zoom-overlay video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #page-work.zoom-leaving .bento-item,
+    #page-work.zoom-leaving .site-footer { transition: opacity 0.45s ease; opacity: 0; }
+    .page.zoom-enter { animation: projIn 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+    @keyframes projIn {
+      from { opacity: 0; transform: translateY(60px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
@@ -1907,6 +1932,63 @@
       });
     });
 
+    // Grid card → project: the card's media grows to fill the screen, then the project page rises in beneath it
+    let zooming = false;
+    function zoomToProject(card, page) {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (zooming) return;
+      if (reduce || !card.animate) { navigateTo(page); return; }
+      zooming = true;
+
+      const r = card.getBoundingClientRect();
+      const overlay = document.createElement('div');
+      overlay.className = 'zoom-overlay';
+      Object.assign(overlay.style, { top: r.top + 'px', left: r.left + 'px', width: r.width + 'px', height: r.height + 'px', borderRadius: '16px' });
+
+      const still = card.querySelector('img.item-static');
+      let ready = Promise.resolve();
+      if (still) {
+        const img = new Image();
+        img.src = still.currentSrc || still.src;
+        overlay.appendChild(img);
+        // Start growing only once the frame is decoded, so the first frames aren't an empty box
+        ready = Promise.race([img.decode().catch(() => {}), new Promise(res => setTimeout(res, 250))]);
+      }
+      const hover = card.querySelector('video.item-hover');
+      if (hover && !hover.paused && hover.readyState >= 2) {
+        const v = document.createElement('video');
+        v.muted = true; v.loop = true; v.playsInline = true; v.src = hover.currentSrc || hover.src;
+        v.currentTime = hover.currentTime;
+        v.play().catch(() => {});
+        overlay.appendChild(v);
+      }
+      ready.then(() => {
+      document.body.appendChild(overlay);
+      card.style.visibility = 'hidden';
+      document.getElementById('page-work').classList.add('zoom-leaving');
+
+      const grow = overlay.animate([
+        { top: r.top + 'px', left: r.left + 'px', width: r.width + 'px', height: r.height + 'px', borderRadius: '16px' },
+        { top: '0px', left: '0px', width: window.innerWidth + 'px', height: window.innerHeight + 'px', borderRadius: '0px' }
+      ], { duration: 900, easing: 'cubic-bezier(0.76, 0, 0.24, 1)', fill: 'forwards' });
+
+      grow.onfinish = () => {
+        const target = document.getElementById('page-' + page);
+        if (target) target.classList.add('zoom-enter');
+        navigateTo(page);
+        const work = document.getElementById('page-work');
+        work.classList.remove('zoom-leaving');
+        card.style.visibility = '';
+        const fade = overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 600, easing: 'ease', fill: 'forwards' });
+        fade.onfinish = () => {
+          overlay.remove();
+          if (target) target.classList.remove('zoom-enter');
+          zooming = false;
+        };
+      };
+      });
+    }
+
     window.addEventListener('popstate', () => {
       const hash = location.hash.replace('#', '') || 'home';
       navigateTo(hash);
@@ -2058,7 +2140,7 @@
         a.className = 'bento-item' + (slot.cols === 2 ? ' col-span-2' : '');
         a.href = p.href;
         if (p.internal) {
-          a.addEventListener('click', (e) => { e.preventDefault(); navigateTo(p.href.replace('#','')); });
+          a.addEventListener('click', (e) => { e.preventDefault(); zoomToProject(a, p.href.replace('#','')); });
         } else {
           a.target = '_blank';
         }
