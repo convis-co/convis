@@ -889,8 +889,8 @@
   <section class="page active" id="page-home">
     <div class="hero">
       <div class="hero-video">
-        <!-- CONVIS GS viewer (convis-gs/, built from the CONVIS GS project; media on media.convis.co/convis-gs/): real-time path traced on desktop, the path traced loop video on phones -->
-        <iframe id="heroViewer" src="convis-gs/?embed=1" title="ConVis logo, path traced in real time" tabindex="-1" allow="autoplay"></iframe>
+        <!-- CONVIS GS viewer (convis-gs/, built from the CONVIS GS project; media on media.convis.co/convis-gs/): real-time path traced on desktop, real-time + tilt on WebGPU phones, the path traced loop video otherwise -->
+        <iframe id="heroViewer" src="convis-gs/?embed=1" title="ConVis logo, path traced in real time" tabindex="-1" allow="autoplay; accelerometer; gyroscope"></iframe>
       </div>
       <div class="hero-content">
         <p class="hero-tagline">CONceptualising &amp; VISualising projects that leave a lasting impression.</p>
