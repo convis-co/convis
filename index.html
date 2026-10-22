@@ -603,6 +603,13 @@
     .project-page video.inview-video { aspect-ratio: 16/9; background: var(--surface-raised); }
     .project-page .proj-media iframe { width: 100%; aspect-ratio: 16/9; border: none; display: block; }
 
+    /* YouTube facade: sharp 1280x720 thumbnail until clicked, then the real player */
+    .project-page .yt-facade { position: relative; display: block; width: 100%; aspect-ratio: 16/9; padding: 0; border: none; background: #000; cursor: pointer; overflow: hidden; }
+    .project-page .yt-facade img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .project-page .yt-play { position: absolute; left: 50%; top: 50%; width: 68px; height: 48px; transform: translate(-50%, -50%); border-radius: 12px; background: rgba(23, 23, 23, 0.8); transition: background 0.2s; }
+    .project-page .yt-play::after { content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-38%, -50%); border-style: solid; border-width: 10px 0 10px 17px; border-color: transparent transparent transparent #fff; }
+    .project-page .yt-facade:hover .yt-play, .project-page .yt-facade:focus-visible .yt-play { background: #f00; }
+
     .project-page .proj-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
     .project-page .proj-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
     .project-page .proj-grid-2 img, .project-page .proj-grid-2 video,
@@ -784,7 +791,7 @@
       <p class="proj-intro">The CONVIS Brand Film introduces the studio’s new identity as a precision-built machine.</p>
 
       <div class="proj-media">
-        <iframe width="1920" height="1080" src="https://www.youtube.com/embed/7EC4nK6O3l8" title="CONVIS Brand Film - Cinema 4D Animation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <button type="button" class="yt-facade" data-id="7EC4nK6O3l8" data-title="CONVIS Brand Film - Cinema 4D Animation" aria-label="Play video: CONVIS Brand Film - Cinema 4D Animation"><img src="https://i.ytimg.com/vi/7EC4nK6O3l8/maxresdefault.jpg" alt="CONVIS Brand Film - Cinema 4D Animation" loading="lazy"><span class="yt-play" aria-hidden="true"></span></button>
       </div>
 
       <h2 class="proj-section-label">PROJECT OVERVIEW</h2>
@@ -850,7 +857,7 @@
       <p class="proj-intro">HandOff ™ is a self-initiated spec film about a tendon-driven robot hand. I set out to treat a piece of emerging hardware the way a title sequence treats its subject: taken apart, studied under load, and put back together.</p>
 
       <div class="proj-media">
-        <iframe width="1920" height="1080" src="https://www.youtube.com/embed/X3g1fqiBISM" title="HandOff ™. Cinema 4D Robotics Animation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <button type="button" class="yt-facade" data-id="X3g1fqiBISM" data-title="HandOff ™. Cinema 4D Robotics Animation" aria-label="Play video: HandOff ™. Cinema 4D Robotics Animation"><img src="https://i.ytimg.com/vi/X3g1fqiBISM/maxresdefault.jpg" alt="HandOff ™. Cinema 4D Robotics Animation" loading="lazy"><span class="yt-play" aria-hidden="true"></span></button>
       </div>
 
       <h2 class="proj-section-label">PROJECT OVERVIEW</h2>
@@ -1048,7 +1055,7 @@
       <p class="proj-intro">The Tape is a short 3D horror animation inspired by the psychological tension and narrative tone of Alan Wake.</p>
 
       <div class="proj-media">
-        <iframe width="2560" height="1080" src="https://www.youtube.com/embed/eOvEsvyAQuM" title="The Tape (Cinema 4D Short Film)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <button type="button" class="yt-facade" data-id="eOvEsvyAQuM" data-title="The Tape (Cinema 4D Short Film)" aria-label="Play video: The Tape (Cinema 4D Short Film)"><img src="https://i.ytimg.com/vi/eOvEsvyAQuM/maxresdefault.jpg" alt="The Tape (Cinema 4D Short Film)" loading="lazy"><span class="yt-play" aria-hidden="true"></span></button>
       </div>
 
       <h2 class="proj-section-label">PROJECT OVERVIEW</h2>
@@ -1064,7 +1071,7 @@
 
       <h2 class="proj-section-label">BEHIND THE SCENES</h2>
       <div class="proj-media">
-        <iframe width="1920" height="1080" src="https://www.youtube.com/embed/nIXMZPZj0Qg" title="The Tape (Cinema 4D Short Film) Behind The Scenes" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <button type="button" class="yt-facade" data-id="nIXMZPZj0Qg" data-title="The Tape (Cinema 4D Short Film) Behind The Scenes" aria-label="Play video: The Tape (Cinema 4D Short Film) Behind The Scenes"><img src="https://i.ytimg.com/vi/nIXMZPZj0Qg/maxresdefault.jpg" alt="The Tape (Cinema 4D Short Film) Behind The Scenes" loading="lazy"><span class="yt-play" aria-hidden="true"></span></button>
       </div>
 
       <h2 class="proj-section-label">STILL FRAMES</h2>
@@ -2156,6 +2163,19 @@
       });
     }, { rootMargin: '200px 0px' });
     document.querySelectorAll('video.inview-video').forEach(v => inviewObserver.observe(v));
+
+    // YouTube facades: load the real player only when asked for
+    document.querySelectorAll('.yt-facade').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const f = document.createElement('iframe');
+        f.src = 'https://www.youtube.com/embed/' + btn.dataset.id + '?autoplay=1&rel=0';
+        f.title = btn.dataset.title;
+        f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        f.referrerPolicy = 'strict-origin-when-cross-origin';
+        f.allowFullscreen = true;
+        btn.replaceWith(f);
+      });
+    });
 
   </script>
 </body>
