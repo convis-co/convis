@@ -720,7 +720,7 @@
   <!-- ABOUT -->
   <section class="page" id="page-about">
     <div class="about-page">
-      <div class="about-bg"><video class="inview-video" muted loop playsinline preload="none" data-src="https://media.convis.co/extra/2025-Header-Video-Web.mp4"></video></div>
+      <div class="about-bg"><video class="inview-video" muted loop playsinline preload="none" data-src="https://media.convis.co/About/Header-2025_1080.mp4" data-src720="https://media.convis.co/About/Header-2025_720.mp4"></video></div>
       <div class="about-content">
         <h1>About.</h1>
         <p>CONVIS is a 3D and motion studio, run by motion designer and 3D artist Tuzo James Agudah. Products, brands and ideas, built in 3D and cut into film. Hardware that doesn't exist yet, rendered like it does. For indie startups and global brands. Assembled frame by frame.</p>
@@ -2067,7 +2067,7 @@
     const inviewObserver = new IntersectionObserver((entries) => {
       entries.forEach(({ target: v, isIntersecting }) => {
         if (isIntersecting) {
-          if (!v.src) v.src = v.dataset.src;
+          if (!v.src) v.src = (v.dataset.src720 && (Math.min(screen.width, screen.height) < 700 || window.innerWidth < 900)) ? v.dataset.src720 : v.dataset.src;
           v.play().catch(() => {});
         } else {
           v.pause();
