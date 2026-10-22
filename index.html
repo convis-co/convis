@@ -415,70 +415,31 @@
       min-height: 100vh;
       display: flex;
       align-items: center;
+      justify-content: center;
       padding: 120px var(--side) 80px;
       overflow: hidden;
     }
     .about-bg { position: absolute; inset: 0; z-index: 0; background: var(--surface-sunken); }
     .about-bg img,
-    .about-bg video { width: 100%; height: 100%; object-fit: cover; opacity: 0.22; filter: grayscale(1); }
-    /* blueprint grid: 8 px minor, 40 px major hairlines */
-    .about-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(242, 242, 238, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(242, 242, 238, 0.06) 1px, transparent 1px),
-        linear-gradient(rgba(242, 242, 238, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(242, 242, 238, 0.025) 1px, transparent 1px);
-      background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
-    }
+    .about-bg video { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
 
-    .about-content {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: clamp(32px, 6vw, 96px);
-      align-items: start;
-    }
+    .about-content { position: relative; z-index: 1; max-width: 640px; text-align: center; }
     .about-content h1 {
       font-family: var(--f-text);
       font-weight: 600;
       font-size: clamp(40px, 5vw, 56px);
       line-height: 1;
-      margin: 16px 0 28px;
+      margin-bottom: 28px;
     }
-    .about-content p { font-size: 16px; line-height: 24px; color: var(--ink-muted); margin-bottom: 16px; max-width: 520px; }
-    .about-content p.about-lead { font-size: 20px; line-height: 28px; color: var(--ink); }
-    .about-owner {
+    .about-content p { font-size: 20px; line-height: 28px; color: var(--ink); }
+    .about-buttons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
+    .about-content p.about-owner {
       font-family: var(--f-mono);
-      font-size: 11px !important;
-      line-height: 16px !important;
+      font-size: 11px;
+      line-height: 16px;
       letter-spacing: 0.08em;
       color: var(--ink-muted);
       margin-top: 28px;
-    }
-    .about-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
-
-    /* spec sheet */
-    .spec { width: 100%; border-collapse: collapse; margin-top: 4px; }
-    .spec th, .spec td { text-align: left; padding: 11px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
-    .spec th { font-family: var(--f-mono); font-weight: 500; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); width: 34%; }
-    .spec td { font-family: var(--f-mono); font-size: 13px; line-height: 20px; color: var(--ink); }
-    .spec td a { border-bottom: 1px solid var(--line-strong); }
-    .spec td a:hover { border-color: var(--ink); }
-
-    .modules { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; margin-top: 36px; }
-    .module { border-top: 1px solid var(--line-strong); padding: 16px 0 18px; }
-    .module .code { display: block; font-size: 32px; line-height: 32px; color: var(--ink); }
-    .module .label { display: block; margin-top: 10px; }
-
-    @media (max-width: 900px) {
-      .about-content { grid-template-columns: 1fr; }
     }
 
     /* ===== LAB PAGE ===== */
@@ -761,37 +722,13 @@
     <div class="about-page">
       <div class="about-bg"><video class="inview-video" muted loop playsinline preload="none" data-src="https://media.convis.co/extra/2025-Header-Video-Web.mp4"></video></div>
       <div class="about-content">
-        <div>
-          <span class="label">01 // About</span>
-          <h1>Engineered motion.</h1>
-          <p class="about-lead">CONVIS is a 3D and motion studio. Hardware that doesn't exist yet, rendered like it does.</p>
-          <p>Product films, brand systems and spec pieces for startups and global brands. Modelled, rigged, lit and rendered in Cinema 4D and Octane, finished in After Effects. Assembled frame by frame.</p>
-          <p>Founded in 2016 by Tuzo James Agudah.</p>
-          <div class="about-buttons">
-            <button class="btn btn-primary" id="aboutContact">Start a project <span aria-hidden="true">&rarr;</span></button>
-            <button class="btn btn-outline" data-nav="work">View work <span aria-hidden="true">&#8599;</span></button>
-          </div>
-          <p class="about-owner">This site is owned and operated by Tuzo James Agudah.</p>
+        <h1>About.</h1>
+        <p>CONVIS is a 3D and motion studio, run by motion designer and 3D artist Tuzo James Agudah. Products, brands and ideas, built in 3D and cut into film. Hardware that doesn't exist yet, rendered like it does. For indie startups and global brands. Assembled frame by frame.</p>
+        <div class="about-buttons">
+          <button class="btn btn-primary" id="aboutContact">Start a project <span aria-hidden="true">&rarr;</span></button>
+          <button class="btn btn-outline" data-nav="work">View work <span aria-hidden="true">&#8599;</span></button>
         </div>
-        <div>
-          <span class="label">02 // Spec</span>
-          <table class="spec">
-            <tr><th>Studio</th><td>CONVIS</td></tr>
-            <tr><th>Founded</th><td>2016</td></tr>
-            <tr><th>Lead</th><td>Tuzo James Agudah</td></tr>
-            <tr><th>Based</th><td>United Kingdom</td></tr>
-            <tr><th>Tools</th><td>Cinema 4D &middot; Octane &middot; After Effects &middot; Render Network</td></tr>
-            <tr><th>Contact</th><td><a href="mailto:james@convis.co">james@convis.co</a></td></tr>
-          </table>
-          <div class="modules">
-            <div class="module"><span class="code">C-01</span><span class="label">3D animation</span></div>
-            <div class="module"><span class="code">O-02</span><span class="label">Motion design</span></div>
-            <div class="module"><span class="code">N-03</span><span class="label">Branding</span></div>
-            <div class="module"><span class="code">V-04</span><span class="label">Product visualization</span></div>
-            <div class="module"><span class="code">I-05</span><span class="label">Cinematic storytelling</span></div>
-            <div class="module"><span class="code">S-06</span><span class="label">Systems &amp; code</span></div>
-          </div>
-        </div>
+        <p class="about-owner">This site is owned and operated by Tuzo James Agudah.</p>
       </div>
     </div>
     <footer class="site-footer">
