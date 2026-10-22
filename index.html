@@ -421,7 +421,19 @@
     }
     .about-bg { position: absolute; inset: 0; z-index: 0; background: var(--surface-sunken); }
     .about-bg img,
-    .about-bg video { width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
+    .about-bg video { width: 100%; height: 100%; object-fit: cover; opacity: 0.22; filter: grayscale(1); }
+    /* blueprint grid over the video: 8 px minor, 40 px major hairlines */
+    .about-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(242, 242, 238, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(242, 242, 238, 0.06) 1px, transparent 1px),
+        linear-gradient(rgba(242, 242, 238, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(242, 242, 238, 0.025) 1px, transparent 1px);
+      background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+    }
 
     .about-content { position: relative; z-index: 1; max-width: 640px; text-align: center; }
     .about-content h1 {
